@@ -1,0 +1,28 @@
+name: Build
+on: [push]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v4
+      - name: Compile
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: abstract.tex
+      - name: Gather artifacts
+        run: |
+          mkdir -p public
+          mv *.pdf public/
+          mv index.html public/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: public
+      - name: Publish to GitHub pages
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: public/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
