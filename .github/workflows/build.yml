@@ -13,16 +13,9 @@ jobs:
       - name: Gather artifacts
         run: |
           mkdir -p public
+          mv *.log public/
           mv *.pdf public/
-          mv index.html public/
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           path: public
-      - name: Publish to GitHub pages
-        uses: crazy-max/ghaction-github-pages@v3
-        with:
-          target_branch: gh-pages
-          build_dir: public/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
